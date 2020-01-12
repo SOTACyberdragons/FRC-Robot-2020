@@ -15,8 +15,14 @@ package frc.robot;
  */
 public class RobotMap {
 	//PWM
+	
 	//public static final int CLIMBER_MOTOR = 0;
 
+
 	//CAN
+	public static final int RIGHT_MASTER = 0;
+	public static final int RIGHT_SLAVE = 1;
+	public static final int LEFT_MASTER = 2; 
+	public static final int LEFT_SLAVE = 3; 
 	
 }
