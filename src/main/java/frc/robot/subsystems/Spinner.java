@@ -62,6 +62,22 @@ public class Spinner extends Subsystem {
            return false;
        }  
     }
+
+    public void spinSpinner(double speed) {
+        if(speed >= -1 && speed <= 1) {                
+            spinnerMotor.set(speed);
+        } else if(speed < -1) {
+            spinnerMotor.set(-1);
+        } else if(speed > 1) {
+            spinnerMotor.set(1);
+        } else {
+            spinnerMotor.set(0);
+        } 
+    }
+
+    public void stopSpinner() {
+        spinnerMotor.set(0);
+    }
  
     @Override
     protected void initDefaultCommand() {

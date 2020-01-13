@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.SpinToColor;
 
 
 /**
@@ -20,10 +21,10 @@ public class OI {
 
     public Command moveToAngle20;
 
-    public Joystick leftStick = new Joystick(0);
-    public Joystick rightStick = new Joystick(1);
-    public Joystick leftAuxStick = new Joystick(2);
-    public Joystick rightAuxStick = new Joystick(3);
+    public Joystick leftDriveStick = new Joystick(0); //main driver
+    public Joystick rightDriveStick = new Joystick(1); //main driver
+    public Joystick leftAuxStick = new Joystick(2); //co-driver
+    public Joystick rightAuxStick = new Joystick(3); //co-driver
 
     public OI() {
 
@@ -31,21 +32,24 @@ public class OI {
          * Set buttons
          */
 
+         JoystickButton spinToColor = new JoystickButton(rightDriveStick, ButtonMap.SPIN_TO_COLOR); 
         
        
         /*
          * Set commands
          */
+        spinToColor.whenPressed(new SpinToColor(Robot.getGameData()));
+
 
        
 	}
 	
 	public Joystick getLeftStick() {
-		return leftStick;
+		return leftDriveStick;
 	}
 
 	public Joystick getRightStick() {
-		return rightStick;
+		return rightDriveStick;
 	}
 
     public Joystick getLeftAuxStick() {
