@@ -12,6 +12,7 @@ public class SpinToColor extends Command {
 
     String wantedColor; 
     String currentColor;
+    String previousColor; 
     double spinnerSpeed = 1; //range from -1 to 1
     public SpinToColor(String color) {
         // Use requires() here to declare subsystem dependencies
@@ -22,12 +23,17 @@ public class SpinToColor extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        currentColor = Robot.spinner.getColor();
+        
 
     } 
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+
+        currentColor = Robot.spinner.getColor();
+
+        previousColor = currentColor; 
+
         if(currentColor != wantedColor) {
             Robot.spinner.spinSpinner(spinnerSpeed);
         } else if(currentColor == wantedColor) {
