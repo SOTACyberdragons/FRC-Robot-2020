@@ -30,5 +30,15 @@ public class RobotMap {
 	//spinner
 	public static final int SPINNER_MOTOR = 4;
 
+	//robotintake
+	public static final int INTAKE_MOTOR = 5;
+
+	//PCM
+	public static final int DOUBLE_SOLENOID_ZERO = 0;
+	public static final int DOUBLE_SOLENOID_ONE = 1;
+
+
+
+
 	
 }

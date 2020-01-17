@@ -57,8 +57,7 @@ public class SpinFourTimes extends Command {
         //     else{
         //         return false;
         //     }
-    }
-
+    } 
     // Called once after isFinished returns true
     protected void end() {
         Robot.spinner.stopSpinner();

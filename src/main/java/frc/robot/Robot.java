@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Spinner;
 
 /**
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   public static Drivetrain drivetrain;
   public static Spinner spinner;
+  public static Intake intake;
   public static OI oi;
 
   /**
@@ -43,6 +45,7 @@ public class Robot extends TimedRobot {
 
     drivetrain = new Drivetrain();
     spinner = new Spinner();
+    intake = new Intake();
     oi = new OI();
 
   }
