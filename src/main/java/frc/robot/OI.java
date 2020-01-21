@@ -33,14 +33,19 @@ public class OI {
          */
 
          JoystickButton spinToColor = new JoystickButton(rightDriveStick, ButtonMap.SPIN_TO_COLOR); 
+         JoystickButton liftIntake = new JoystickButton(leftDriveStick, ButtonMap.LIFT_INTAKE); 
+         JoystickButton lowerIntake = new JoystickButton(leftDriveStick, ButtonMap.LOWER_INTAKE); 
+         JoystickButton spinIntake = new JoystickButton(rightAuxStick, ButtonMap.SPIN_INTAKE);
+          
         
        
         /*
          * Set commands
          */
         spinToColor.whenPressed(new SpinToColor(Robot.getGameData()));
-
-
+        liftIntake.whenPressed(new LiftIntake("up"));
+        lowerIntake.whenPressed(new LiftIntake("down"));
+        spinIntake.whenPressed(new SpinIntake(1));
        
 	}
 	
