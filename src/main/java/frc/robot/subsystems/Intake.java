@@ -33,12 +33,13 @@ public class Intake extends Subsystem {
     }
 
     public void moveIntake(String direction) {
-        if(direction == "lift") {
+        if(direction == "down") {
             intakeSolenoid.set(Value.kForward);
-        } else if(direction == "lower") {
+        } else if(direction == "up") {
             intakeSolenoid.set(Value.kReverse);
         }
     }
+
     
     @Override
     protected void initDefaultCommand() {

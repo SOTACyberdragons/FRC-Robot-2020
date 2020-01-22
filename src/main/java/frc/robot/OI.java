@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.MoveIntake;
 import frc.robot.commands.SpinToColor;
+import frc.robot.commands.SpinIntake;
 
 
 /**
@@ -43,9 +45,9 @@ public class OI {
          * Set commands
          */
         spinToColor.whenPressed(new SpinToColor(Robot.getGameData()));
-        liftIntake.whenPressed(new LiftIntake("up"));
-        lowerIntake.whenPressed(new LiftIntake("down"));
-        spinIntake.whenPressed(new SpinIntake(1));
+        liftIntake.whenPressed(new MoveIntake("up"));
+        lowerIntake.whenPressed(new MoveIntake("down"));
+        spinIntake.whenPressed(new SpinIntake(1.0));
        
 	}
 	
