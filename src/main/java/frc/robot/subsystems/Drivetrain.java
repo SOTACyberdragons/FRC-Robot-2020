@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.wpilibj.Preferences;
 import frc.robot.Constants;
@@ -32,10 +32,10 @@ public class Drivetrain extends Subsystem {
 	public static final double MAX_JERK = 20 / 0.0254; // 30 / 0.0254; //from example code in Pathfinder
 	public final double encoderMaxSpeed = 33000;
 
-	public WPI_TalonSRX leftSlave;
-	public WPI_TalonSRX leftMaster;
-	public WPI_TalonSRX rightSlave;
-	public WPI_TalonSRX rightMaster;
+	public WPI_TalonFX leftSlave;
+	public WPI_TalonFX leftMaster;
+	public WPI_TalonFX rightSlave;
+	public WPI_TalonFX rightMaster;
 
 	private LimeLight  limelight = new LimeLight();
 	
@@ -47,10 +47,10 @@ public class Drivetrain extends Subsystem {
 
 	public Drivetrain() {
 
-		leftSlave = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
-		rightSlave = new WPI_TalonSRX(RobotMap.RIGHT_MASTER);
-		leftMaster = new WPI_TalonSRX(RobotMap.LEFT_SLAVE);
-		rightMaster = new WPI_TalonSRX(RobotMap.RIGHT_SLAVE);
+		leftSlave = new WPI_TalonFX(RobotMap.LEFT_MASTER);
+		rightSlave = new WPI_TalonFX(RobotMap.RIGHT_MASTER);
+		leftMaster = new WPI_TalonFX(RobotMap.LEFT_SLAVE);
+		rightMaster = new WPI_TalonFX(RobotMap.RIGHT_SLAVE);
 		
 		//WPI_TalonSRX leftMotor2 = leftMotor;
 		drive = new DifferentialDrive(leftMaster, rightMaster);
@@ -71,7 +71,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	
-	public void initDriveTalon(WPI_TalonSRX talon) {
+	public void initDriveTalon(WPI_TalonFX talon) {
 		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
 		
 	
