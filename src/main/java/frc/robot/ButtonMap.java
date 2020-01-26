@@ -10,6 +10,7 @@ public class ButtonMap {
 
     //codriver buttons
 
+    public static final int SHOOT_OUT = 3; //left stick
     public static final int SPIN_INTAKE = 2; //right stick
 
 }

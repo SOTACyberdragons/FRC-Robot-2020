@@ -9,10 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
 
 /**
@@ -31,6 +33,7 @@ public class Robot extends TimedRobot {
   public static Drivetrain drivetrain;
   public static Spinner spinner;
   public static Intake intake;
+  public static Shooter shooter; 
   public static OI oi;
 
   /**
@@ -46,6 +49,7 @@ public class Robot extends TimedRobot {
     drivetrain = new Drivetrain();
     spinner = new Spinner();
     intake = new Intake();
+    shooter = new Shooter();
     oi = new OI();
 
   }
@@ -103,6 +107,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    Scheduler.getInstance().run();
 
     gameData = DriverStation.getInstance().getGameSpecificMessage();
   }
@@ -128,7 +133,7 @@ public class Robot extends TimedRobot {
           break;
       }
     } else {
-      color = "";
+      color = "Red";
     }
     return color;
   }
