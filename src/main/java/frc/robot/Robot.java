@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   private static String gameData;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
  
+  public static Preferences prefs;
   public static Drivetrain drivetrain;
   public static Spinner spinner;
   public static Intake intake;
