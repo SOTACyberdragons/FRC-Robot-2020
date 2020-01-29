@@ -29,15 +29,16 @@ import frc.robot.utils.TalonFXConfig;
 public class Drivetrain extends Subsystem {
 
 
-	public final static double WHEELBASE_WIDTH = 24.25;
+	public final static double WHEELBASE_WIDTH = 28; //24 without bumpers
 	public final static double WHEEL_DIAMETER = 6;
-	public final static double PULSE_PER_REVOLUTION = 4096;
-	public final static double REDUCTION_TO_ENCODER = 10.75;
-	public final static double DISTANCE_PER_PULSE = Math.PI * WHEEL_DIAMETER / PULSE_PER_REVOLUTION;
-	public final static double MAX_SPEED = 110.0;
+	public final static double PULSE_PER_REVOLUTION = 2048; // from http://www.ctr-electronics.com/talon-fx.html#product_tabs_tech_specs
+	public final static double REDUCTION_TO_ENCODER_FAST = (2048 * 42*24)/(11*50); //11:42 24:50
+	public final static double REDUCTION_TO_ENCODER_SLOW = (2048 * 42*60)/(11*14); //11:42 14:60
+	public final static double DISTANCE_PER_PULSE = Math.PI * WHEEL_DIAMETER / REDUCTION_TO_ENCODER_FAST;
+	public final static double MAX_SPEED = 110.0; //idk
 	public static final double MAX_ACCEL = 1.0 / 0.0254; //0.2g in in/s^2
 	public static final double MAX_JERK = 20 / 0.0254; // 30 / 0.0254; //from example code in Pathfinder
-	public final double encoderMaxSpeed = 33000;
+	public final double encoderMaxSpeed = 33000; //idk
 
 	public WPI_TalonFX leftSlave, leftMaster, rightSlave, rightMaster;
 

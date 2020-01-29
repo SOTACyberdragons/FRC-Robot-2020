@@ -31,14 +31,19 @@ public class RobotMap {
 	public static final int SPINNER_MOTOR = 4;
 
 	//shooter
-	public static final int SHOOTER_MOTOR = 11;
-
+	public static final int LEFT_SHOOTER_MOTOR = 11;
+	public static final int RIGHT_SHOOTER_MOTOR = 15;
+	
 	//robotintake
 	public static final int INTAKE_MOTOR = 5;
+
+	//Hopper
+	public static final int HOPPER_MOTOR = 6;
 
 	//PCM
 	public static final int DOUBLE_SOLENOID_ZERO = 0;
 	public static final int DOUBLE_SOLENOID_ONE = 1;
+
 
 
 

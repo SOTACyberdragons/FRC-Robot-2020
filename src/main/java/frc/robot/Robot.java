@@ -9,10 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AutoChoice;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
@@ -30,11 +33,35 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private static String gameData;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+ 
   public static Drivetrain drivetrain;
   public static Spinner spinner;
   public static Intake intake;
   public static Shooter shooter; 
+  public static Hopper hopper;
   public static OI oi;
+
+  private AutoChoice autoChoice;
+	private SendableChooser<AutoChoice> chooser;
+	private Command autoCommand;
+
+	/*Auto Commands*/
+	//Baseline
+	private Command doNotMove;
+	
+
+//	public static CsvLogger csvLogger;
+
+	private void initCommands() {
+		System.out.println("Initializing path commands...");
+		
+		//Baseline
+	//	doNotMove = new AutoCrossBaselineCenter();
+		System.out.println("Done initializing path commands.");
+		
+		SmartDashboard.putData("autoCrossBaselineCenter", doNotMove);
+  }
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -50,40 +77,46 @@ public class Robot extends TimedRobot {
     spinner = new Spinner();
     intake = new Intake();
     shooter = new Shooter();
+    hopper = new Hopper();
     oi = new OI();
+
+    initCommands();
+
+		//Autonomous Chooser
+		chooser = new SendableChooser<AutoChoice>();
+    chooser.addOption("Don't Move", AutoChoice.DO_NOT_MOVE);
+    SmartDashboard.putData("Autonomous Chooser", chooser);
+
 
   }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use this for
-   * items like diagnostics that you want ran during disabled, autonomous,
-   * teleoperated and test.
-   *
-   * <p>
-   * This runs after the mode specific periodic functions, but before LiveWindow
-   * and SmartDashboard integrated updating.
-   */
   @Override
   public void robotPeriodic() {
   }
 
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable chooser
-   * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
-   * remove all of the chooser code and uncomment the getString line to get the
-   * auto name from the text box below the Gyro
-   *
-   * <p>
-   * You can add additional auto modes by adding additional comparisons to the
-   * switch structure below with additional strings. If using the SendableChooser
-   * make sure to add them to the chooser code above as well.
-   */
+
   @Override
   public void autonomousInit() {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    Scheduler.getInstance().run();
+		
+		autoChoice = chooser.getSelected();
+    SmartDashboard.putString("Selected Autonomous", autoChoice.toString());
+    
+    switch (autoChoice) {
+			case DO_NOT_MOVE:
+			//	autoCommand = new AutoDoNotMove();
+				break;
+			default:
+				//will only work on sides
+			//	autoCommand = autoCrossBaseline;
+		}
+
+		SmartDashboard.putString("Autonomous Command", autoCommand.getName());
+		autoCommand.start();
   }
 
   /**
@@ -91,16 +124,20 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-    case kCustomAuto:
-      // Put custom auto code here
-      break;
-    case kDefaultAuto:
-    default:
-      // Put default auto code here
-      break;
-    }
+    Scheduler.getInstance().run();
+	
   }
+
+  @Override
+	public void teleopInit() {
+
+		if (autoCommand != null) {
+			autoCommand.cancel();
+		}
+		
+		drivetrain.resetSensors();
+	}
+
 
   /**
    * This function is called periodically during operator control.
@@ -111,6 +148,7 @@ public class Robot extends TimedRobot {
 
     gameData = DriverStation.getInstance().getGameSpecificMessage();
   }
+
 
   public static String getGameData() {
     String color = ""; 

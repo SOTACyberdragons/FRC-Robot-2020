@@ -5,14 +5,12 @@ import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 
-/**
- *
- */
-public class ShootOut extends Command {
+
+public class MoveBallInHopper extends Command {
 
 
-    public ShootOut() {
-        requires(Robot.shooter);
+    public MoveBallInHopper() {
+        requires(Robot.hopper);
     }
 
     // Called just before this Command runs the first time
@@ -22,7 +20,7 @@ public class ShootOut extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.shooter.shootOut();	
+        Robot.hopper.moveBall();	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,7 +31,7 @@ public class ShootOut extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        Robot.shooter.stop();
+        Robot.hopper.stop();
     }
 
     // Called when another command which requires one or more of the same
