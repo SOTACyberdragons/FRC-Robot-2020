@@ -23,12 +23,12 @@ public class RobotMap {
 
 	//drivetrain
 	public static final int RIGHT_MASTER = 1;
-	public static final int RIGHT_SLAVE = 10;
+	public static final int RIGHT_SLAVE = 0;
 	public static final int LEFT_MASTER = 2; 
 	public static final int LEFT_SLAVE = 3; 
 
 	//spinner
-	public static final int SPINNER_MOTOR = 4;
+	public static final int SPINNER_MOTOR = 11;
 
 	//shooter
 	public static final int LEFT_SHOOTER_MOTOR = 4 ;
