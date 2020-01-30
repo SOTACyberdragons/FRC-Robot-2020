@@ -8,21 +8,25 @@ import frc.robot.utils.TalonFXConfig;
 
 public class Shooter extends Subsystem {
 
-    private WPI_TalonFX shooterMotor; 
+    private WPI_TalonFX leftMotor , rightMotor; 
     private double speed = 1;
 
     public Shooter() {
-        shooterMotor = TalonFXConfig.generateDefaultTalon(RobotMap.SHOOTER_MOTOR);
-        shooterMotor.configFactoryDefault();
-        shooterMotor.setInverted(false);
+        leftMotor = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SHOOTER_MOTOR);
+        leftMotor.configFactoryDefault();
+        leftMotor.setInverted(false);
+        rightMotor = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SHOOTER_MOTOR);
+        rightMotor.configFactoryDefault();
+        rightMotor.setInverted(false);
+        rightMotor.follow(leftMotor);
     }
     
     public void shootOut() {
-        shooterMotor.set(speed);
+        leftMotor.set(speed);
     }
 
     public void stop() {
-        shooterMotor.set(0);
+        leftMotor.set(0);
     }
 
     @Override
