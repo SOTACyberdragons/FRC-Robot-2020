@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -12,13 +13,19 @@ public class Shooter extends Subsystem {
     private double speed = 1;
 
     public Shooter() {
-        leftMotor = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SHOOTER_MOTOR);
-        leftMotor.configFactoryDefault();
-        leftMotor.setInverted(false);
         rightMotor = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SHOOTER_MOTOR);
         rightMotor.configFactoryDefault();
-        rightMotor.setInverted(false);
-        rightMotor.follow(leftMotor);
+        rightMotor.setInverted(true);
+        leftMotor = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_SHOOTER_MOTOR);
+        leftMotor.configFactoryDefault();
+        leftMotor.setInverted(false);
+        //leftMotor.follow(rightMotor);
+
+        leftMotor.configFactoryDefault();
+        rightMotor.configFactoryDefault();
+
+        rightMotor.setNeutralMode(NeutralMode.Coast);
+        leftMotor.setNeutralMode(NeutralMode.Coast);
     }
     
     public void shootOut() {
