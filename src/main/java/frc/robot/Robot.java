@@ -146,7 +146,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
     Scheduler.getInstance().run();
+  
+		SmartDashboard.putNumber("Left drive ticks", drivetrain.getLeftRawEncoderTicks());
+		SmartDashboard.putNumber("Right drive ticks", drivetrain.getRightRawEncoderTicks());
+		SmartDashboard.putNumber("Right Drive", drivetrain.getRightEncoder());
+		SmartDashboard.putNumber("Left Drive", drivetrain.getLeftEncoder());
+
+		SmartDashboard.putNumber("Gyro", drivetrain.getHeading());
 
     gameData = DriverStation.getInstance().getGameSpecificMessage();
   }

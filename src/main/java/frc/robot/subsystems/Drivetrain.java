@@ -169,7 +169,19 @@ public class Drivetrain extends Subsystem {
 		rightMaster.set(ControlMode.MotionMagic, totalDistance, DemandType.AuxPID, angle);
 	}
 
-	public void setAngle(final double angle) {
+	public double getDistance() {
+		return (getLeftEncoder() + getRightEncoder()/2)/DISTANCE_PER_PULSE;
+	}
+
+	public double getLeftDistance() {
+		return getLeftEncoder() /DISTANCE_PER_PULSE;
+	}
+
+	public double getRightDistance() {
+		return getRightEncoder() /DISTANCE_PER_PULSE;
+	}
+	
+ 	public void setAngle(final double angle) {
 		final double distance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2;
 		final double totalAngle = angle + getHeading();
 		// rightMaster.set(ControlMode.MotionMagic, distance, DemandType.AuxPID,

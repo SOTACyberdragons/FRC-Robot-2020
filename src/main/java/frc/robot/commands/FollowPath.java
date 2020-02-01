@@ -106,9 +106,9 @@ public class FollowPath extends Command {
 		SmartDashboard.putNumber("Pathfinder.angleError", angleError);
 		SmartDashboard.putNumber("Pathfinder.angleErrorChange", angleErrorChange);
 
-		double leftMotorOutput = left.calculate(drive.getLeftEncoder().getDistance()) - 
+		double leftMotorOutput = left.calculate(drive.getLeftDistance()) - 
 				(angleKP * angleError - angleKD * angleErrorChange);
-		double rightMotorOutput = right.calculate(drive.getRightEncoder().getDistance()) + 
+		double rightMotorOutput = right.calculate(drive.getRightDistance()) + 
 				(angleKP * angleError - angleKD * angleErrorChange);
 		
 		SmartDashboard.putNumber("Pathfinder.leftMotorOutput", leftMotorOutput);
