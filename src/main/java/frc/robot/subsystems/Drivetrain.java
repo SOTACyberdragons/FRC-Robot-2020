@@ -118,7 +118,7 @@ public class Drivetrain extends Subsystem {
 		drive.arcadeDrive(0, 0);
 	}
 
-	public void zeroEncoder() {
+	public void zeroEncoders() {
 		leftMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
 		rightMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
 	}
@@ -167,6 +167,11 @@ public class Drivetrain extends Subsystem {
 		final double angle = getHeading();
 		rightMaster.set(ControlMode.MotionMagic, totalDistance, DemandType.AuxPID, angle);
 	}
+
+	public double getDistance() {
+		return (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2 *DISTANCE_PER_PULSE;
+	}
+
 
 	public void setAngle(final double angle) {
 		final double distance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2;

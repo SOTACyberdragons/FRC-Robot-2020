@@ -15,9 +15,8 @@ public class Spinner extends Subsystem {
     private WPI_TalonSRX spinnerMotor;
 
     private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
-    private final ColorMatch m_colorMatcher = new ColorMatch();
-    Color detectedColor = m_colorSensor.getColor();
+    private final ColorSensorV3 m_colorSensor;
+    private final ColorMatch  m_colorMatcher = new ColorMatch();
 
     //@TODO: configure colors
     private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
@@ -25,11 +24,15 @@ public class Spinner extends Subsystem {
     private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
+
     String colorString;
-    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+    ColorMatchResult match;
 
 
     public Spinner() {
+        
+        m_colorSensor = new ColorSensorV3(i2cPort);
+             
 
         m_colorMatcher.addColorMatch(kBlueTarget);
         m_colorMatcher.addColorMatch(kGreenTarget);
@@ -40,7 +43,17 @@ public class Spinner extends Subsystem {
 
     }
 
-    public String getColor() {
+    public double getBlue() {
+        return m_colorSensor.getColor().blue;
+    }
+    public double getRed() {
+        return m_colorSensor.getColor().red;
+    }
+    public double getGreen() {
+        return m_colorSensor.getColor().green;
+    }
+        public String getColor() {
+        match = m_colorMatcher.matchClosestColor(m_colorSensor.getColor());
         if (match.color == kBlueTarget) {
             colorString = "Blue";
           } else if (match.color == kRedTarget) {
