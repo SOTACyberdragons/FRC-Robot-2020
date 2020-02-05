@@ -20,7 +20,6 @@ public class RobotMap {
 
 
 	//CAN
-<<<<<<< HEAD
 
 	//drivetrain
 	public static final int RIGHT_MASTER = 1;
@@ -45,11 +44,5 @@ public class RobotMap {
 
 
 
-=======
-	public static final int RIGHT_MASTER = 5;
-	public static final int RIGHT_SLAVE = 6;
-	public static final int LEFT_MASTER = 1; 
-	public static final int LEFT_SLAVE = 2; 
->>>>>>> master
 	
 }

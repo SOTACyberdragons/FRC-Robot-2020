@@ -10,15 +10,12 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
-<<<<<<< HEAD
 import com.fasterxml.jackson.databind.deser.impl.FailingDeserializer;
 
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-=======
->>>>>>> master
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 import frc.robot.commands.DifferentialDriveWithJoysticks;
@@ -48,26 +45,17 @@ public class Drivetrain extends Subsystem {
 
 	public WPI_TalonFX leftSlave, leftMaster, rightSlave, rightMaster;
 
-<<<<<<< HEAD
 
 	private final LimeLight limelight = new LimeLight();
 
 	private final DifferentialDrive drive;
 	private final PigeonIMU gyro = new PigeonIMU(0);
 	private Preferences prefs;
-=======
-	private final LimeLight limelight = new LimeLight();
-
-	private final DifferentialDrive drive;
-	public DifferentialDrive drive1;
-	private final PigeonIMU gyro = new PigeonIMU(0);
->>>>>>> master
 
 	public Drivetrain() {
 		leftMaster = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_MASTER);
         leftSlave = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SLAVE);
 
-<<<<<<< HEAD
         rightMaster = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_MASTER);
         rightSlave = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_SLAVE);
 
@@ -99,31 +87,6 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public void initDriveTalonSRX(final WPI_TalonSRX talon) {
-=======
-		leftSlave = new WPI_TalonSRX(RobotMap.LEFT_MASTER);
-		rightSlave = new WPI_TalonSRX(RobotMap.RIGHT_MASTER);
-		leftMaster = new WPI_TalonSRX(RobotMap.LEFT_SLAVE);
-		rightMaster = new WPI_TalonSRX(RobotMap.RIGHT_SLAVE);
-
-		// WPI_TalonSRX leftMotor2 = leftMotor;
-		drive = new DifferentialDrive(leftMaster, rightMaster);
-		drive.setSafetyEnabled(true);
-		drive.setExpiration(0.1);
-		drive.setMaxOutput(1);
-
-		initDriveTalon(leftMaster);
-		leftMaster.setSensorPhase(true);
-		leftMaster.setInverted(true); // 'true' disabled this side -- be careful
-		initDriveTalon(rightMaster);
-		rightMaster.setSensorPhase(false);
-		rightMaster.setInverted(false); // set to false
-
-		leftSlave.follow(leftMaster);
-		rightSlave.follow(rightMaster);
-	}
-
-	public void initDriveTalon(final WPI_TalonSRX talon) {
->>>>>>> master
 		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.PID_LOOP_IDX,
 				Constants.TIMEOUT_MS);
 
@@ -156,11 +119,8 @@ public class Drivetrain extends Subsystem {
 		talon.configMotionAcceleration(20000, Constants.TIMEOUT_MS);
 	}
 
-<<<<<<< HEAD
 	
 
-=======
->>>>>>> master
 	public void stop() {
 		drive.arcadeDrive(0, 0);
 	}
@@ -215,14 +175,11 @@ public class Drivetrain extends Subsystem {
 		rightMaster.set(ControlMode.MotionMagic, totalDistance, DemandType.AuxPID, angle);
 	}
 
-<<<<<<< HEAD
 	public double getDistance() {
 		return (getLeftRawEncoderTicks() + getRightRawEncoderTicks() / 2)*DISTANCE_PER_PULSE;
 	}
 
 
-=======
->>>>>>> master
 	public void setAngle(final double angle) {
 		final double distance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2;
 		final double totalAngle = angle + getHeading();
