@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.DriveStraight20inches;
 import frc.robot.commands.MoveIntake;
 import frc.robot.commands.ShootOut;
 //import frc.robot.commands.SpinToColor;
@@ -40,6 +41,8 @@ public class OI {
          JoystickButton lowerIntake = new JoystickButton(leftDriveStick, ButtonMap.LOWER_INTAKE); 
          JoystickButton spinIntake = new JoystickButton(rightAuxStick, ButtonMap.SPIN_INTAKE);
          JoystickButton shootOut = new JoystickButton(leftAuxStick, ButtonMap.SHOOT_OUT);
+         JoystickButton driveStraight20inches = new JoystickButton(rightDriveStick, ButtonMap.DRIVE_STRAIGHT);
+
           
         
        
@@ -51,6 +54,8 @@ public class OI {
         lowerIntake.whenPressed(new MoveIntake("down"));
         spinIntake.whenPressed(new SpinIntake(1.0));
         shootOut.whileHeld(new ShootOut());
+        driveStraight20inches.whileHeld(new DriveStraight20inches());
+
        
 	}
 	

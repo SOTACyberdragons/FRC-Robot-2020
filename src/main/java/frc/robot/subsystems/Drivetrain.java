@@ -66,14 +66,16 @@ public class Drivetrain extends Subsystem {
 
        // PigeonIMU mGyro = new PigeonIMU(10101010);
 
-        leftSlave.follow(leftMaster);
+		leftSlave.follow(leftMaster);
         rightSlave.follow(rightMaster);
 
         leftMaster.setInverted(false);
         leftSlave.setInverted(false);
         rightMaster.setInverted(false);
         rightSlave.setInverted(false);
+		
 		rightMaster.setSensorPhase(false);
+		leftMaster.setSensorPhase(false);
 		
         rightMaster.setNeutralMode(NeutralMode.Coast);
         leftMaster.setNeutralMode(NeutralMode.Coast);
