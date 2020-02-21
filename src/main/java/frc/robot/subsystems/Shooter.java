@@ -19,7 +19,7 @@ public class Shooter extends Subsystem {
         leftMotor = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_SHOOTER_MOTOR);
         leftMotor.configFactoryDefault();
         leftMotor.setInverted(false);
-        //leftMotor.follow(rightMotor);
+        rightMotor.follow(leftMotor);
 
         leftMotor.configFactoryDefault();
         rightMotor.configFactoryDefault();
