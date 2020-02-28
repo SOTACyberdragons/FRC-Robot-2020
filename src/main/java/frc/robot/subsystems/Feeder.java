@@ -13,16 +13,17 @@ public class Feeder extends Subsystem {
     private int feederSpeed = -1;
 
     public Feeder() {
-
-       
-       
         feederMotor = new WPI_TalonSRX(RobotMap.FEEDER_MOTOR);
 
     }
 
-   public void setFeederSpeed() {
+   public void feedIn() {
        feederMotor.set(feederSpeed);
 
+   }
+
+   public void feedOut() {
+       feederMotor.set(-feederSpeed);
    }
 
  

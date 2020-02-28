@@ -8,6 +8,7 @@ import frc.robot.commands.DriveStraight20inches;
 import frc.robot.commands.FeedBall;
 import frc.robot.commands.MoveIntake;
 import frc.robot.commands.ShootOut;
+import frc.robot.commands.SpinHopper;
 //import frc.robot.commands.SpinToColor;
 import frc.robot.commands.SpinIntake;
 
@@ -44,7 +45,9 @@ public class OI {
          JoystickButton shootOut = new JoystickButton(leftAuxStick, ButtonMap.SHOOT_OUT);
          JoystickButton driveStraight20inches = new JoystickButton(rightDriveStick, ButtonMap.DRIVE_STRAIGHT);
          JoystickButton feedBall = new JoystickButton(leftAuxStick, ButtonMap.FEED_BALL);
-          
+         JoystickButton feedBallOut = new JoystickButton(leftAuxStick, ButtonMap.FEED_BALL_OUT);
+         JoystickButton spinHopper = new JoystickButton(rightAuxStick, ButtonMap.SPIN_HOPPER);
+
         
        
         /*
@@ -56,7 +59,9 @@ public class OI {
         spinIntake.whenPressed(new SpinIntake(1.0));
         shootOut.whileHeld(new ShootOut());
         driveStraight20inches.whileHeld(new DriveStraight20inches());
-        feedBall.whileHeld(new FeedBall());
+        feedBall.whileHeld(new FeedBall("in"));
+        feedBallOut.whileHeld(new FeedBall("out"));
+        spinHopper.whileHeld(new SpinHopper());
        
 	}
 	

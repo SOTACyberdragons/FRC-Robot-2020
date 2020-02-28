@@ -10,7 +10,7 @@ import frc.robot.utils.TalonFXConfig;
 public class Shooter extends Subsystem {
 
     private WPI_TalonFX leftMotor , rightMotor; 
-    private double speed = 1;
+    private double speed = -1.0;
 
     public Shooter() {
         rightMotor = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SHOOTER_MOTOR);

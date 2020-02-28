@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
@@ -42,8 +43,10 @@ public class Robot extends TimedRobot {
   public static Intake intake;
   public static Shooter shooter; 
   public static Feeder feeder;
+  public static Hopper hopper;
   public static OI oi;
 
+  public static RobotContainer robotContainer; 
   // private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
   // private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
@@ -61,12 +64,13 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-
+    //robotContainer = new RobotContainer();
     drivetrain = new Drivetrain();
     spinner = new Spinner();
     intake = new Intake();
     shooter = new Shooter();
     feeder = new Feeder();
+    hopper = new Hopper();
     oi = new OI();
 
     drivetrain.resetSensors();

@@ -8,18 +8,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FeedBall extends Command {
+public class SpinHopper extends Command {
 
-    String direction = "";
-
-    public FeedBall(String direction) {
-        requires(Robot.feeder);
-        this.direction = direction;
+    double speed;
+    public SpinHopper() {
+        requires(Robot.hopper);
     }
-    public FeedBall() {
-        requires(Robot.feeder);
-    }
-
 
     // Called just before this Command runs the first time
     protected void initialize() {  
@@ -28,14 +22,8 @@ public class FeedBall extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(direction == "in") { 
-        Robot.feeder.feedIn();	
-        } else if(direction == "out") {
-            Robot.feeder.feedOut();
-        } else{
-            Robot.feeder.feedIn();
-        }
-        System.out.println("Feeding!!!!");
+        Robot.hopper.setHopperSpeed();	
+        System.out.println("Spinning Hopper!!!");
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -46,7 +34,7 @@ public class FeedBall extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-        Robot.feeder.stopFeeding();
+        Robot.hopper.stopHopping();
     }
 
     // Called when another command which requires one or more of the same
@@ -54,5 +42,4 @@ public class FeedBall extends Command {
     protected void interrupted() {
         end();
     }
-    
 }
