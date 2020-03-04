@@ -26,6 +26,7 @@ public class MoveIntake extends Command {
         } else if (direction == "down") {
            Robot.intake.moveIntake("down");
         }
+        System.out.println("INtake moving!!!!");
     } 
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,12 +37,11 @@ public class MoveIntake extends Command {
     @Override
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
     // Called once after isFinished returns true
     protected void end() {
-        Robot.intake.stopMoving();
     }
 
     // Called when another command which requires one or more of the same

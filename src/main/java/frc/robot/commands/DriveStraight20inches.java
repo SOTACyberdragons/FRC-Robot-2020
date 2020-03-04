@@ -7,7 +7,7 @@ public class DriveStraight20inches extends Command {
     }
             
     protected void initialize() {
-        Robot.drivetrain.zeroEncoders();
+      //  Robot.drivetrain.zeroEncoders();
     }
     
     protected void execute() {

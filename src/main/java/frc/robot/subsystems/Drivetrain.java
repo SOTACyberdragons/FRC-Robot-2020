@@ -68,7 +68,7 @@ public class Drivetrain extends Subsystem {
 		
 
 	public Drivetrain() {
-		zeroEncoders();
+		//zeroEncoders();
 
 		leftMaster = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_MASTER);
         leftSlave = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SLAVE);
@@ -91,6 +91,8 @@ public class Drivetrain extends Subsystem {
 		
 		rightMaster.setSensorPhase(false);
 		leftMaster.setSensorPhase(false);
+
+
 		
         rightMaster.setNeutralMode(NeutralMode.Coast);
         leftMaster.setNeutralMode(NeutralMode.Coast);
@@ -100,6 +102,7 @@ public class Drivetrain extends Subsystem {
 		odometry = new DifferentialDriveOdometry(getHeading());
 		drive = new DifferentialDrive(leftMaster, rightMaster);
 
+		drive.setRightSideInverted(false);
 	}
 
 	public void initDriveTalonSRX(final WPI_TalonSRX talon) {
@@ -141,10 +144,10 @@ public class Drivetrain extends Subsystem {
 		drive.arcadeDrive(0, 0);
 	}
 
-	public void zeroEncoders() {
-		leftMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
-		rightMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
-	}
+	// public void zeroEncoders() {
+	// 	leftMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
+	// 	rightMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
+	// }
 
 	public double getLeftRawEncoderTicks() {
 		return leftMaster.getSelectedSensorPosition(0);
@@ -181,27 +184,27 @@ public class Drivetrain extends Subsystem {
 		);
 	}
 
-	/**
-	 * Resets the odometry to the specified pose.
-	 *
-	 * @param pose The pose to which to set the odometry.
-	 */
-	public void resetOdometry(Pose2d pose) {
-		zeroEncoders();
-		odometry.resetPosition(pose, getHeading());
-	}
+	// /**
+	//  * Resets the odometry to the specified pose.
+	//  *
+	//  * @param pose The pose to which to set the odometry.
+	//  */
+	// public void resetOdometry(Pose2d pose) {
+	// 	zeroEncoders();
+	// 	odometry.resetPosition(pose, getHeading());
+	// }
 
-	/**
-	 * Controls the left and right sides of the drive directly with voltages.
-	 *
-	 * @param leftVolts  the commanded left output
-	 * @param rightVolts the commanded right output
-	 */
-	public void tankDriveVolts(double leftVolts, double rightVolts) {
-		leftMaster.setVoltage(leftVolts);
-		rightMaster.setVoltage(-rightVolts);
-		drive.feed();
-	}
+	// /**
+	//  * Controls the left and right sides of the drive directly with voltages.
+	//  *
+	//  * @param leftVolts  the commanded left output
+	//  * @param rightVolts the commanded right output
+	//  */
+	// public void tankDriveVolts(double leftVolts, double rightVolts) {
+	// 	leftMaster.setVoltage(leftVolts);
+	// 	rightMaster.setVoltage(-rightVolts);
+	// 	drive.feed();
+	// }
 
 	/**
 	 * Drives the robot using arcade controls.
@@ -287,9 +290,16 @@ public class Drivetrain extends Subsystem {
 	}
 
 	public double getDistance() {
-		return (getLeftRawEncoderTicks() + getRightRawEncoderTicks() / 2)*DISTANCE_PER_PULSE;
+		return ((getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2)*DISTANCE_PER_PULSE;
 	}
 
+	public double getRightDistanceInches() {
+		return getLeftRawEncoderTicks() *DISTANCE_PER_PULSE;
+	}
+
+	public double getLeftDistanceInches() {
+		return getRightRawEncoderTicks() * DISTANCE_PER_PULSE;
+ 	}
 
 	public void setAngle(final double angle) {
 		final double distance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2;

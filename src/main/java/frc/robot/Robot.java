@@ -119,7 +119,8 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     SmartDashboard.putNumber("Left Ticks: ", drivetrain.getLeftRawEncoderTicks());
     SmartDashboard.putNumber("Right Ticks: ", drivetrain.getRightRawEncoderTicks());
-
+    SmartDashboard.putNumber("Right Distance: ", drivetrain.getRightDistance());
+    SmartDashboard.putNumber("Left Distance: ", drivetrain.getLeftDistance());
     SmartDashboard.putNumber("Drive Distance: ", drivetrain.getDistance());
     SmartDashboard.putNumber("Red: ", spinner.getRed());
     SmartDashboard.putNumber("Blue: ", spinner.getBlue());

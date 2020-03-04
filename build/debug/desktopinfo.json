@@ -1,0 +1,11 @@
+[
+  {
+    "name": "FRC-Robot-2020 (in project FRC-Robot-2020)",
+    "file": "C:\\Users\\SOTAC\\OneDrive\\Documents\\FRC-Robot-2020\\FRC-Robot-2020\\build\\libs\\FRC-Robot-2020.jar",
+    "extensions": [
+      "C:\\Users\\SOTAC\\OneDrive\\Documents\\FRC-Robot-2020\\FRC-Robot-2020\\build\\tmp\\expandedArchives\\halsim_gui-2020.2.2-windowsx86-64.zip_f45deb918a703b9a683ad4047e06ed3c\\windows\\x86-64\\shared\\halsim_gui.dll"
+    ],
+    "librarydir": "C:\\Users\\SOTAC\\OneDrive\\Documents\\FRC-Robot-2020\\FRC-Robot-2020\\build\\tmp\\jniExtractDir",
+    "mainclass": "frc.robot.Main"
+  }
+]

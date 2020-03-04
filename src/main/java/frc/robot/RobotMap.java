@@ -43,7 +43,7 @@ public class RobotMap {
 	
 	//PCM
 	public static final int DOUBLE_SOLENOID_ZERO = 0;
-	public static final int DOUBLE_SOLENOID_ONE = 1;
+	public static final int DOUBLE_SOLENOID_ONE = 7;
 
 
 
