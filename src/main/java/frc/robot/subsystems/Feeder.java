@@ -2,8 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
@@ -11,6 +10,11 @@ public class Feeder extends Subsystem {
 
     private WPI_TalonSRX feederMotor;
     private int feederSpeed = -1;
+    private DigitalInput stopSign = new DigitalInput(RobotMap.STOP_SIGN); //break-beam
+
+    public boolean getBreakBeam() {
+        return stopSign.get();
+    }
 
     public Feeder() {
         feederMotor = new WPI_TalonSRX(RobotMap.FEEDER_MOTOR);

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -37,9 +38,6 @@ public class Drivetrain extends Subsystem {
 
 	public final static double WHEELBASE_WIDTH = 24.25;
 	public final static double WHEEL_DIAMETER = 6;
-	// public final static double PULSE_PER_REVOLUTION = 4096;
-	// public final static double REDUCTION_TO_ENCODER = 10.75;
-	// public final static double DISTANCE_PER_PULSE = Math.PI * WHEEL_DIAMETER / PULSE_PER_REVOLUTION;
 	public final static double PULSE_PER_REVOLUTION = 2048; // from http://www.ctr-electronics.com/talon-fx.html#product_tabs_tech_specs
 	public final static double REDUCTION_TO_ENCODER_FAST = PULSE_PER_REVOLUTION * 7.95; //11:42 24:50
 	public final static double REDUCTION_TO_ENCODER_SLOW = (2048 * 42*60)/(11*14); //11:42 14:60
@@ -55,11 +53,11 @@ public class Drivetrain extends Subsystem {
 	public final boolean gyroReversed = false;
 
 	public WPI_TalonFX leftSlave, leftMaster, rightSlave, rightMaster;
-
+	private Faults faults = new Faults();
 
 	private final LimeLight limelight = new LimeLight();
 
-	private final DifferentialDrive drive;
+	public final DifferentialDrive drive;
 	private final PigeonIMU gyro = new PigeonIMU(0);
 	private Preferences prefs;
 	
@@ -138,7 +136,9 @@ public class Drivetrain extends Subsystem {
 		talon.configMotionAcceleration(20000, Constants.TIMEOUT_MS);
 	}
 
-	
+	public boolean leftEncoderOutOfPhase() {
+		return faults.SensorOutOfPhase;
+	}
 
 	public void stop() {
 		drive.arcadeDrive(0, 0);
@@ -177,6 +177,7 @@ public class Drivetrain extends Subsystem {
 	public double getAverageDistance() {
 		return (getRightDistance() + getLeftDistance()) / 2;
 	}
+
 	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
 		return new DifferentialDriveWheelSpeeds(
 			leftMaster.getActiveTrajectoryVelocity() * DISTANCE_PER_PULSE_METERS * 10,

@@ -122,6 +122,11 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right Distance: ", drivetrain.getRightDistance());
     SmartDashboard.putNumber("Left Distance: ", drivetrain.getLeftDistance());
     SmartDashboard.putNumber("Drive Distance: ", drivetrain.getDistance());
+
+    SmartDashboard.putBoolean("Left encoder  out of phase:", drivetrain.leftEncoderOutOfPhase());
+    SmartDashboard.putBoolean("Break Beam:", feeder.getBreakBeam());
+    //SmartDashboard.putBoolean("Right encoder  out of phase:", value);
+
     SmartDashboard.putNumber("Red: ", spinner.getRed());
     SmartDashboard.putNumber("Blue: ", spinner.getBlue());
     SmartDashboard.putNumber("Green: ", spinner.getGreen());

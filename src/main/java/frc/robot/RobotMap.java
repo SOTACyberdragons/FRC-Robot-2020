@@ -45,6 +45,9 @@ public class RobotMap {
 	public static final int DOUBLE_SOLENOID_ZERO = 0;
 	public static final int DOUBLE_SOLENOID_ONE = 7;
 
+	//DIO 
+	public static final int STOP_SIGN = 0;
+
 
 
 
