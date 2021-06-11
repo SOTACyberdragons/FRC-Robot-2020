@@ -4,6 +4,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.DriveStraight20inches;
+import frc.robot.commands.FeedBall;
+import frc.robot.commands.MoveIntake;
+import frc.robot.commands.ShootOut;
+import frc.robot.commands.SpinHopper;
+//import frc.robot.commands.SpinToColor;
+import frc.robot.commands.SpinIntake;
 
 
 /**
@@ -20,10 +27,10 @@ public class OI {
 
     public Command moveToAngle20;
 
-    public Joystick leftStick = new Joystick(0);
-    public Joystick rightStick = new Joystick(1);
-    public Joystick leftAuxStick = new Joystick(2);
-    public Joystick rightAuxStick = new Joystick(3);
+    public Joystick leftDriveStick = new Joystick(0); //main driver
+    public Joystick rightDriveStick = new Joystick(1); //main driver
+    public Joystick leftAuxStick = new Joystick(2); //co-driver
+    public Joystick rightAuxStick = new Joystick(3); //co-driver
 
     public OI() {
 
@@ -31,21 +38,39 @@ public class OI {
          * Set buttons
          */
 
+         JoystickButton spinToColor = new JoystickButton(rightDriveStick, ButtonMap.SPIN_TO_COLOR); 
+         JoystickButton liftIntake = new JoystickButton(leftDriveStick, ButtonMap.LIFT_INTAKE); 
+         JoystickButton lowerIntake = new JoystickButton(leftDriveStick, ButtonMap.LOWER_INTAKE); 
+         JoystickButton spinIntake = new JoystickButton(rightAuxStick, ButtonMap.SPIN_INTAKE);
+         JoystickButton shootOut = new JoystickButton(leftAuxStick, ButtonMap.SHOOT_OUT);
+         JoystickButton driveStraight20inches = new JoystickButton(rightDriveStick, ButtonMap.DRIVE_STRAIGHT);
+         JoystickButton feedBall = new JoystickButton(leftAuxStick, ButtonMap.FEED_BALL);
+         JoystickButton feedBallOut = new JoystickButton(leftAuxStick, ButtonMap.FEED_BALL_OUT);
+         JoystickButton spinHopper = new JoystickButton(rightAuxStick, ButtonMap.SPIN_HOPPER);
+
         
        
         /*
-         * Set commands
+         * Set command
          */
-
+        //spinToColor.whenPressed(new SpinToColor(/*Robot.getGameData()*/"Red"));
+        liftIntake.whenPressed(new MoveIntake("up"));
+        lowerIntake.whenPressed(new MoveIntake("down"));
+        spinIntake.whenPressed(new SpinIntake(1.0));
+        shootOut.whileHeld(new ShootOut());
+        driveStraight20inches.whileHeld(new DriveStraight20inches());
+        feedBall.whileHeld(new FeedBall("in"));
+        feedBallOut.whileHeld(new FeedBall("out"));
+        spinHopper.whileHeld(new SpinHopper());
        
 	}
 	
 	public Joystick getLeftStick() {
-		return leftStick;
+		return leftDriveStick;
 	}
 
 	public Joystick getRightStick() {
-		return rightStick;
+		return rightDriveStick;
 	}
 
     public Joystick getLeftAuxStick() {
