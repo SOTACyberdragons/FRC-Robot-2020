@@ -69,33 +69,33 @@ public class Drivetrain extends Subsystem {
 		//zeroEncoders();
 
 		leftMaster = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_MASTER);
-        leftSlave = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SLAVE);
+		leftSlave = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SLAVE);
 
-        rightMaster = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_MASTER);
-        rightSlave = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_SLAVE);
+		rightMaster = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_MASTER);
+		rightSlave = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_SLAVE);
 
-        leftMaster.configFactoryDefault();
-        rightMaster.configFactoryDefault();
-        leftSlave.configFactoryDefault();
+		leftMaster.configFactoryDefault();
+		rightMaster.configFactoryDefault();
+		leftSlave.configFactoryDefault();
 		rightSlave.configFactoryDefault();
-		
-		leftSlave.follow(leftMaster);
-        rightSlave.follow(rightMaster);
 
-        leftMaster.setInverted(false);
-        leftSlave.setInverted(false);
-        rightMaster.setInverted(false);
-        rightSlave.setInverted(false);
-		
+		leftSlave.follow(leftMaster);
+		rightSlave.follow(rightMaster);
+
+		leftMaster.setInverted(false);
+		leftSlave.setInverted(false);
+		rightMaster.setInverted(false);
+		rightSlave.setInverted(false);
+
 		rightMaster.setSensorPhase(false);
 		leftMaster.setSensorPhase(false);
 
 
-		
-        rightMaster.setNeutralMode(NeutralMode.Coast);
-        leftMaster.setNeutralMode(NeutralMode.Coast);
-        rightSlave.setNeutralMode(NeutralMode.Coast);
-        leftSlave.setNeutralMode(NeutralMode.Coast);
+
+		rightMaster.setNeutralMode(NeutralMode.Coast);
+		leftMaster.setNeutralMode(NeutralMode.Coast);
+		rightSlave.setNeutralMode(NeutralMode.Coast);
+		leftSlave.setNeutralMode(NeutralMode.Coast);
 
 		odometry = new DifferentialDriveOdometry(getHeading());
 		drive = new DifferentialDrive(leftMaster, rightMaster);
