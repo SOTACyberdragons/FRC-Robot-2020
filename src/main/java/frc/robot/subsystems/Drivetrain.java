@@ -31,7 +31,7 @@ import frc.robot.utils.TalonFXConfig;
 
 
 /**
- *
+ * Class for drivetrain of the robot.
  */
 public class Drivetrain extends Subsystem {
 
@@ -102,7 +102,12 @@ public class Drivetrain extends Subsystem {
 
 		drive.setRightSideInverted(false);
 	}
-
+	/** 
+	* Initializes TalonSRX motors.
+	*
+	* @param talon of type WPI_TalonSRX, motor to initialize
+	* @return none
+	*/
 	public void initDriveTalonSRX(final WPI_TalonSRX talon) {
 		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.PID_LOOP_IDX,
 				Constants.TIMEOUT_MS);
@@ -135,11 +140,20 @@ public class Drivetrain extends Subsystem {
 		talon.configMotionCruiseVelocity(25000, Constants.TIMEOUT_MS);
 		talon.configMotionAcceleration(20000, Constants.TIMEOUT_MS);
 	}
-
+	/** 
+	 * Returns sensor out of phase fault code.
+	 * @return Sensor Out of Phase
+	 * 
+	*/
+	
 	public boolean leftEncoderOutOfPhase() {
 		return faults.SensorOutOfPhase;
 	}
-
+	/**
+	 * Method to stop the robot.
+	 * @param none
+	 * @return none
+	 */
 	public void stop() {
 		drive.arcadeDrive(0, 0);
 	}
@@ -148,36 +162,67 @@ public class Drivetrain extends Subsystem {
 	// 	leftMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
 	// 	rightMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
 	// }
-
+	/**
+	 * Gets the position of the left motor in raw position units.
+	 * 
+	 * @return left motor sensor position
+	 */
 	public double getLeftRawEncoderTicks() {
 		return leftMaster.getSelectedSensorPosition(0);
 	}
 
+	/**
+	 * Gets the positon of the right motor in raw position units.
+	 * @return right motor sensor position
+	 */
 	public double getRightRawEncoderTicks() {
 		return rightMaster.getSelectedSensorPosition(0);
 	}
 
+	/**
+	 * Gets the position of the left motor in inches.
+	 * @return Left motor in raw position units * DISTANCE_PER_PULSE
+	 */
 	public double getLeftEncoderInches() {
 		return getLeftRawEncoderTicks() * DISTANCE_PER_PULSE;
 	}
 
+	/**
+	 * Gets the position of the right motor in inches.
+	 * @return Right motor in raw position units * DISTANCE_PER_PULSE
+	 */
 	public double getRightEncoderInches() {
 		return getRightRawEncoderTicks() * DISTANCE_PER_PULSE;
 	}
 
+	/**
+	 * Gets the distance of the left motor.
+	 * @return Left motor in raw position units * the DISTANCE_PER_PULSE_METERS
+	 */
 	public double getLeftDistance() {
 		return getLeftRawEncoderTicks() * DISTANCE_PER_PULSE_METERS;
 	}
 
+	/**
+	 * Gets the distance of the right motor.
+	 * @return Right motor in raw position units * the DISTANCE_PER_PULSE_METERS
+	 */
 	public double getRightDistance() {
 		return getRightRawEncoderTicks() * DISTANCE_PER_PULSE_METERS;
 	}
 
-
+	/** 
+	 * Gets the average distance of the left and right motors.
+	 * @return The average distance of the left and right motor.  ((getRightDistance + getLeftDistance)/2)
+	*/
 	public double getAverageDistance() {
 		return (getRightDistance() + getLeftDistance()) / 2;
 	}
 
+	/**
+	 * Gets the speeds of the right and left wheels.
+	 * @return The right and left Active Trajectory Velocity * DISTANCE_PER_PULSE_METERS * 10
+	 */
 	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
 		return new DifferentialDriveWheelSpeeds(
 			leftMaster.getActiveTrajectoryVelocity() * DISTANCE_PER_PULSE_METERS * 10,
@@ -242,7 +287,7 @@ public class Drivetrain extends Subsystem {
 		gyro.setFusedHeading(0);
 	}
 
-	  /**
+	/**
 	 * Returns the turn rate of the robot.
 	 *
 	 * @return The turn rate of the robot, in degrees per second
@@ -253,7 +298,11 @@ public class Drivetrain extends Subsystem {
 		double currentAngularRate = xyz_dps[2];
 		return currentAngularRate;
 	}
-	
+	/**
+	 * Returns the angle of the robot
+	 * 
+	 * @return the angle of the robot in degrees
+	 */
 	public double getAngle() {
 		final PigeonIMU.FusionStatus fusionStatus = new PigeonIMU.FusionStatus();
 		final double[] xyz_dps = new double[3];
@@ -262,6 +311,10 @@ public class Drivetrain extends Subsystem {
 		return currentAngle;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public Rotation2d getHeading() {
 		final PigeonIMU.FusionStatus fusionStatus = new PigeonIMU.FusionStatus();
 		double angle = gyro.getFusedHeading(fusionStatus);
