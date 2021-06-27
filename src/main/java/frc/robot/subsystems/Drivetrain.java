@@ -312,8 +312,8 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Finds the degree in which the robot is turning.
+	 * @return A rotation in a 2d coordinate frame with sine and cosine. (radians)
 	 */
 	public Rotation2d getHeading() {
 		final PigeonIMU.FusionStatus fusionStatus = new PigeonIMU.FusionStatus();
@@ -322,20 +322,41 @@ public class Drivetrain extends Subsystem {
 		return Rotation2d.fromDegrees(newAngle);
 	}
 
+	/**
+	 * Resets the sensor position.
+	 */
 	public void resetSensors() {
 		leftMaster.setSelectedSensorPosition(0);
 		rightMaster.setSelectedSensorPosition(0);
 		gyro.setFusedHeading(0);
 	}
 
+	/**
+	 * drive method for differential drive platform.
+	 * 
+	 * @param xSpeed The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+	 * @param zRotation The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
+     	 *                  positive.
+	 */
 	public void drive(final double xSpeed, final double zRotation) {
 		drive.arcadeDrive(xSpeed, zRotation, true);
 	}
 
+	/**
+	* This is a public accessor method for the drivetrain instance of the *limelight.
+	*
+	*@returns the limelight object.
+	*/
 	public LimeLight getLimeLight() {
 		return limelight;
 	}
 
+	/**
+	* This method moves the drivetrain a given distance in inches. 
+	* It converts the distance in inches to encoder ticks, then adds that to
+	* the current robot position, then uses talon.set(...) to set the distance. https://www.ctr-electronics.com/downloads/api/java/html/classcom_1_1ctre_1_1phoenix_1_1motorcontrol_1_1can_1_1_w_p_i___talon_f_x.html#a33ebd356cf623a9f5ef0634d7284105d
+	* @param distanceIn to move straight in inches.
+	*/
 	public void setDistance(final double distanceIn) {
 		final double distanceTicks = distanceIn / DISTANCE_PER_PULSE;
 		final double totalDistance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2 + distanceTicks;
@@ -343,18 +364,36 @@ public class Drivetrain extends Subsystem {
 		rightMaster.set(ControlMode.MotionMagic, totalDistance, DemandType.AuxPID, angle);
 	}
 
+	/**
+	 *  Gets the distance of the robot
+	 * @return average distance of left and right motors * DISTANCE_PER_PULSE
+	 */
 	public double getDistance() {
 		return ((getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2)*DISTANCE_PER_PULSE;
 	}
 
+	/**
+	 * Gets the distance of the right motor from the left motor in inches.
+	 * @return left motor position * DISTANCE_PER_PULSE
+	 */
 	public double getRightDistanceInches() {
 		return getLeftRawEncoderTicks() *DISTANCE_PER_PULSE;
 	}
 
+	/**
+	 * Gets the distance of the left motor from the right motor in inches.
+	 * @return right motor position * DISTANCE_PER_PULSE
+	 */
 	public double getLeftDistanceInches() {
 		return getRightRawEncoderTicks() * DISTANCE_PER_PULSE;
  	}
 
+	/**
+	 * This method rotates the drivetrain.
+	 * Averages the distance of the left and right motors.
+	 * Creates the total angle ot the robot.
+	 * @param angle to rotate in degrees
+	 */
 	public void setAngle(final double angle) {
 		final double distance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2;
 		final double totalAngle = angle + getAngle();
@@ -368,6 +407,12 @@ public class Drivetrain extends Subsystem {
 	}
 
 	// inches per second
+	/**
+	 * This methods sets the speed of the robot.
+	 * 
+	 * @param leftSpeed Speed of left motor
+	 * @param rightSpeed Speed of right motor
+	 */
 	public void setVelocity(final double leftSpeed, final double rightSpeed) {
 		double left, right;
 		if (leftSpeed > MAX_SPEED) {
