@@ -265,8 +265,10 @@ public class Drivetrain extends Subsystem {
 
 	/**
 	 * Returns the turn rate of the robot.
+	 * https://www.ctr-electronics.com/downloads/api/java/html/classcom_1_1ctre_1_1phoenix_1_1sensors_1_1_pigeon_i_m_u.html#a233c6fe158bbca0ddd210378a7e4218d
 	 *
 	 * @return The turn rate of the robot, in degrees per second
+	 * 
 	 */
 	public double getTurnRate() {
 		double [] xyz_dps = new double [3];
@@ -304,7 +306,7 @@ public class Drivetrain extends Subsystem {
 	 * @return the robot's heading in degrees, from -180 to 180
 	 */
 	public double getHeading() {
-		return m_gyro.getRotation2d().getDegrees();
+		return gyro.getRotation2d().getDegrees();
 	}
 
 
