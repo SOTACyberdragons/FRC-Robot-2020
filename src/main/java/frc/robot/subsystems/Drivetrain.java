@@ -111,7 +111,7 @@ public class Drivetrain extends Subsystem {
 	 * @TODO not sure what these units should be check docs
 	 */
 	public void updateOdomemtry() {
-		odometry.update(gyro.getRotation2d(), getLeftDistanceInches(), getRightDistanceInches());
+		odometry.update(gyro.getRotation2d(), getLeftDistanceMeters(), getRightDistanceMeters());
 	}
 	
 	/** 
@@ -383,6 +383,23 @@ public class Drivetrain extends Subsystem {
 	public double getLeftDistanceInches() {
 		return getRightRawEncoderTicks() * DISTANCE_PER_PULSE;
  	}
+
+	 /**
+	 * Gets the distance of the right motor from the left motor in meters.
+	 * @return left motor position * DISTANCE_PER_PULSE
+	 */
+	public double getRightDistanceMeters() {
+		return getLeftRawEncoderTicks() *DISTANCE_PER_PULSE_METERS;
+	}
+
+	/**
+	 * Gets the distance of the left motor from the right motor in meters.
+	 * @return right motor position * DISTANCE_PER_PULSE
+	 */
+	public double getLeftDistanceMeters() {
+		return getRightRawEncoderTicks() * DISTANCE_PER_PULSE_METERS;
+ 	}
+
 
 	/**
 	 * This method rotates the drivetrain.
