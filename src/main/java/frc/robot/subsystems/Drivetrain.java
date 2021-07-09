@@ -52,7 +52,7 @@ public class Drivetrain extends Subsystem {
 
 	public final boolean gyroReversed = false;
 
-	public WPI_TalonFX leftSlave, leftMaster, rightSlave, rightMaster;
+	public WPI_TalonFX leftFollower, leftMain, rightFollower, rightMain;
 	private Faults faults = new Faults();
 
 	private final LimeLight limelight = new LimeLight();
@@ -68,37 +68,37 @@ public class Drivetrain extends Subsystem {
 	public Drivetrain() {
 		//zeroEncoders();
 
-		leftMaster = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_MASTER);
-		leftSlave = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SLAVE);
+		leftMain = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_MASTER);
+		leftFollower = TalonFXConfig.generateDefaultTalon(RobotMap.LEFT_SLAVE);
 
-		rightMaster = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_MASTER);
-		rightSlave = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_SLAVE);
+		rightMain = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_MASTER);
+		rightFollower = TalonFXConfig.generateDefaultTalon(RobotMap.RIGHT_SLAVE);
 
-		leftMaster.configFactoryDefault();
-		rightMaster.configFactoryDefault();
-		leftSlave.configFactoryDefault();
-		rightSlave.configFactoryDefault();
+		leftMain.configFactoryDefault();
+		rightMain.configFactoryDefault();
+		leftFollower.configFactoryDefault();
+		rightFollower.configFactoryDefault();
 
-		leftSlave.follow(leftMaster);
-		rightSlave.follow(rightMaster);
+		leftFollower.follow(leftMain);
+		rightFollower.follow(rightMain);
 
-		leftMaster.setInverted(false);
-		leftSlave.setInverted(false);
-		rightMaster.setInverted(false);
-		rightSlave.setInverted(false);
+		leftMain.setInverted(false);
+		leftFollower.setInverted(false);
+		rightMain.setInverted(false);
+		rightFollower.setInverted(false);
 
-		rightMaster.setSensorPhase(false);
-		leftMaster.setSensorPhase(false);
+		rightMain.setSensorPhase(false);
+		leftMain.setSensorPhase(false);
 
 
 
-		rightMaster.setNeutralMode(NeutralMode.Coast);
-		leftMaster.setNeutralMode(NeutralMode.Coast);
-		rightSlave.setNeutralMode(NeutralMode.Coast);
-		leftSlave.setNeutralMode(NeutralMode.Coast);
+		rightMain.setNeutralMode(NeutralMode.Coast);
+		leftMain.setNeutralMode(NeutralMode.Coast);
+		rightFollower.setNeutralMode(NeutralMode.Coast);
+		leftFollower.setNeutralMode(NeutralMode.Coast);
 
 		odometry = new DifferentialDriveOdometry(getHeading());
-		drive = new DifferentialDrive(leftMaster, rightMaster);
+		drive = new DifferentialDrive(leftMain, rightMain);
 
 		drive.setRightSideInverted(false);
 	}
@@ -159,8 +159,8 @@ public class Drivetrain extends Subsystem {
 	}
 
 	// public void zeroEncoders() {
-	// 	leftMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
-	// 	rightMaster.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
+	// 	leftMain.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
+	// 	rightMain.setSelectedSensorPosition(0, Constants.PID_LOOP_IDX, Constants.TIMEOUT_MS);
 	// }
 	/**
 	 * Gets the position of the left motor in raw position units.
@@ -168,7 +168,7 @@ public class Drivetrain extends Subsystem {
 	 * @return left motor sensor position
 	 */
 	public double getLeftRawEncoderTicks() {
-		return leftMaster.getSelectedSensorPosition(0);
+		return leftMain.getSelectedSensorPosition(0);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class Drivetrain extends Subsystem {
 	 * @return right motor sensor position
 	 */
 	public double getRightRawEncoderTicks() {
-		return rightMaster.getSelectedSensorPosition(0);
+		return rightMain.getSelectedSensorPosition(0);
 	}
 
 	/**
@@ -225,8 +225,8 @@ public class Drivetrain extends Subsystem {
 	 */
 	public DifferentialDriveWheelSpeeds getWheelSpeeds() {
 		return new DifferentialDriveWheelSpeeds(
-			leftMaster.getActiveTrajectoryVelocity() * DISTANCE_PER_PULSE_METERS * 10,
-			rightMaster.getActiveTrajectoryVelocity() * DISTANCE_PER_PULSE_METERS * 10
+			leftMain.getActiveTrajectoryVelocity() * DISTANCE_PER_PULSE_METERS * 10,
+			rightMain.getActiveTrajectoryVelocity() * DISTANCE_PER_PULSE_METERS * 10
 		);
 	}
 
@@ -247,8 +247,8 @@ public class Drivetrain extends Subsystem {
 	//  * @param rightVolts the commanded right output
 	//  */
 	// public void tankDriveVolts(double leftVolts, double rightVolts) {
-	// 	leftMaster.setVoltage(leftVolts);
-	// 	rightMaster.setVoltage(-rightVolts);
+	// 	leftMain.setVoltage(leftVolts);
+	// 	rightMain.setVoltage(-rightVolts);
 	// 	drive.feed();
 	// }
 
@@ -326,8 +326,8 @@ public class Drivetrain extends Subsystem {
 	 * Resets the sensor position.
 	 */
 	public void resetSensors() {
-		leftMaster.setSelectedSensorPosition(0);
-		rightMaster.setSelectedSensorPosition(0);
+		leftMain.setSelectedSensorPosition(0);
+		rightMain.setSelectedSensorPosition(0);
 		gyro.setFusedHeading(0);
 	}
 
@@ -361,7 +361,7 @@ public class Drivetrain extends Subsystem {
 		final double distanceTicks = distanceIn / DISTANCE_PER_PULSE;
 		final double totalDistance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2 + distanceTicks;
 		final double angle = getAngle();
-		rightMaster.set(ControlMode.MotionMagic, totalDistance, DemandType.AuxPID, angle);
+		rightMain.set(ControlMode.MotionMagic, totalDistance, DemandType.AuxPID, angle);
 	}
 
 	/**
@@ -397,13 +397,13 @@ public class Drivetrain extends Subsystem {
 	public void setAngle(final double angle) {
 		final double distance = (getLeftRawEncoderTicks() + getRightRawEncoderTicks()) / 2;
 		final double totalAngle = angle + getAngle();
-		// rightMaster.set(ControlMode.MotionMagic, distance, DemandType.AuxPID,
+		// rightMain.set(ControlMode.MotionMagic, distance, DemandType.AuxPID,
 		// totalAngle);
-		// leftMaster.set(ControlMode.MotionMagic, distance, DemandType.AuxPID,
+		// leftMain.set(ControlMode.MotionMagic, distance, DemandType.AuxPID,
 		// -totalAngle);
-		// leftMaster.set(ControlMode.PercentOutput, distance,
+		// leftMain.set(ControlMode.PercentOutput, distance,
 		// DemandType.ArbitraryFeedForward, totalAngle);
-		rightMaster.set(ControlMode.PercentOutput, distance, DemandType.ArbitraryFeedForward, -totalAngle);
+		rightMain.set(ControlMode.PercentOutput, distance, DemandType.ArbitraryFeedForward, -totalAngle);
 	}
 
 	// inches per second
@@ -426,9 +426,9 @@ public class Drivetrain extends Subsystem {
 			right = rightSpeed;
 		}
 		final double leftInPerSecToTicksPer100ms = left / DISTANCE_PER_PULSE / 10;
-		leftMaster.set(ControlMode.Velocity, leftInPerSecToTicksPer100ms);
+		leftMain.set(ControlMode.Velocity, leftInPerSecToTicksPer100ms);
 		final double rightInPerSecToTicksPer100ms = right / DISTANCE_PER_PULSE / 10;
-		leftMaster.set(ControlMode.Velocity, rightInPerSecToTicksPer100ms);
+		leftMain.set(ControlMode.Velocity, rightInPerSecToTicksPer100ms);
 
 	}
 
