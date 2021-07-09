@@ -103,6 +103,7 @@ public class Drivetrain extends Subsystem {
 
 		odometry = new DifferentialDriveOdometry(getRotation2d());
 		drive = new DifferentialDrive(leftMain, rightMain);
+		resetEncoders();
 
 		drive.setRightSideInverted(false);
 	}
