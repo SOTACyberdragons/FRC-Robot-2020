@@ -52,18 +52,24 @@ public class Drivetrain extends Subsystem {
 
 	public final boolean gyroReversed = false;
 
+	//encoders are encorperated in talonFX
+
+	//gyro
+	private final PigeonIMU gyro = new PigeonIMU(0);
+
+	DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(distanceBetweenWheels));
+
+	//Odometry class for checking robot pose. 
+	DifferentialDriveOdometry odometry; 
+	
+	//Limelight for vision
+	private final LimeLight limelight = new LimeLight();
+
 	public WPI_TalonFX leftFollower, leftMain, rightFollower, rightMain;
 	private Faults faults = new Faults();
 
-	private final LimeLight limelight = new LimeLight();
-
-	public final DifferentialDrive drive;
-	private final PigeonIMU gyro = new PigeonIMU(0);
 	private Preferences prefs;
 	
-	DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(distanceBetweenWheels));
-	DifferentialDriveOdometry odometry; 
-		
 
 	public Drivetrain() {
 		//zeroEncoders();
@@ -90,56 +96,24 @@ public class Drivetrain extends Subsystem {
 		rightMain.setSensorPhase(false);
 		leftMain.setSensorPhase(false);
 
-
-
 		rightMain.setNeutralMode(NeutralMode.Coast);
 		leftMain.setNeutralMode(NeutralMode.Coast);
 		rightFollower.setNeutralMode(NeutralMode.Coast);
 		leftFollower.setNeutralMode(NeutralMode.Coast);
 
-		odometry = new DifferentialDriveOdometry(getHeading());
+		odometry = new DifferentialDriveOdometry(getRotation2d());
 		drive = new DifferentialDrive(leftMain, rightMain);
 
 		drive.setRightSideInverted(false);
 	}
-	/** 
-	* Initializes TalonSRX motors.
-	*
-	* @param talon of type WPI_TalonSRX, motor to initialize
-	* @return none
-	*/
-	public void initDriveTalonSRX(final WPI_TalonSRX talon) {
-		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.PID_LOOP_IDX,
-				Constants.TIMEOUT_MS);
-
-		/* Set relevant frame periods to be at least as fast as periodic rate */
-		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.TIMEOUT_MS);
-		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.TIMEOUT_MS);
-
-		/* set the peak and nominal outputs */
-		talon.configNominalOutputForward(0, Constants.TIMEOUT_MS);
-		talon.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
-		talon.configPeakOutputForward(1, Constants.TIMEOUT_MS);
-		talon.configPeakOutputReverse(-1, Constants.TIMEOUT_MS);
-
-		/* set closed loop gains in slot 0 - see documentation */
-		// distance
-		talon.selectProfileSlot(Constants.SLOT_IDX, Constants.PID_LOOP_IDX);
-		talon.config_kF(0, Constants.TALON_MAX_OUTPUT / encoderMaxSpeed, Constants.TIMEOUT_MS);
-		talon.config_kP(0, 0.45, Constants.TIMEOUT_MS);
-		talon.config_kI(0, 0, Constants.TIMEOUT_MS);
-		talon.config_kD(0, 0.0, Constants.TIMEOUT_MS);
-
-		// turning
-		talon.config_kF(1, 0, Constants.TIMEOUT_MS);
-		talon.config_kP(1, 0.1, Constants.TIMEOUT_MS);
-		talon.config_kI(1, 0, Constants.TIMEOUT_MS);
-		talon.config_kD(1, 0, Constants.TIMEOUT_MS);
-
-		/* set acceleration and cruise velocity - see documentation */
-		talon.configMotionCruiseVelocity(25000, Constants.TIMEOUT_MS);
-		talon.configMotionAcceleration(20000, Constants.TIMEOUT_MS);
+	/**
+	 * Must update odometry periodically. Add this to period block in Robot.java
+	 * @TODO not sure what these units should be check docs
+	 */
+	public void updateOdomemtry() {
+		odometry.update(gyro.getRotation2d(), getLeftDistanceInches(), getRightDistanceInches());
 	}
+	
 	/** 
 	 * Returns sensor out of phase fault code.
 	 * @return Sensor Out of Phase
@@ -230,27 +204,29 @@ public class Drivetrain extends Subsystem {
 		);
 	}
 
-	// /**
-	//  * Resets the odometry to the specified pose.
-	//  *
-	//  * @param pose The pose to which to set the odometry.
-	//  */
-	// public void resetOdometry(Pose2d pose) {
-	// 	zeroEncoders();
-	// 	odometry.resetPosition(pose, getHeading());
-	// }
+	/**
+	 * Resets the odometry to the specified pose.
+	 *
+	 * @param pose The pose to which to set the odometry.
+	 */
+	public void resetOdometry(Pose2d pose) {
+		zeroEncoders();
+		odometry.resetPosition(pose, getRotation2d());
+	}
 
-	// /**
-	//  * Controls the left and right sides of the drive directly with voltages.
-	//  *
-	//  * @param leftVolts  the commanded left output
-	//  * @param rightVolts the commanded right output
-	//  */
-	// public void tankDriveVolts(double leftVolts, double rightVolts) {
-	// 	leftMain.setVoltage(leftVolts);
-	// 	rightMain.setVoltage(-rightVolts);
-	// 	drive.feed();
-	// }
+
+
+	/**
+	 * Controls the left and right sides of the drive directly with voltages.
+	 *
+	 * @param leftVolts  the commanded left output
+	 * @param rightVolts the commanded right output
+	 */
+	public void tankDriveVolts(double leftVolts, double rightVolts) {
+		leftMain.setVoltage(leftVolts);
+		rightMain.setVoltage(-rightVolts);
+		drive.feed();
+	}
 
 	/**
 	 * Drives the robot using arcade controls.
@@ -315,12 +291,22 @@ public class Drivetrain extends Subsystem {
 	 * Finds the degree in which the robot is turning.
 	 * @return A rotation in a 2d coordinate frame with sine and cosine. (radians)
 	 */
-	public Rotation2d getHeading() {
+	public Rotation2d getRotation2d() {
 		final PigeonIMU.FusionStatus fusionStatus = new PigeonIMU.FusionStatus();
 		double angle = gyro.getFusedHeading(fusionStatus);
 		double newAngle = Math.IEEEremainder(angle, 360) * (gyroReversed ? -1.0 : 1.0);
 		return Rotation2d.fromDegrees(newAngle);
 	}
+
+	/**
+	 * Returns the heading of the robot.
+	 *
+	 * @return the robot's heading in degrees, from -180 to 180
+	 */
+	public double getHeading() {
+		return m_gyro.getRotation2d().getDegrees();
+	}
+
 
 	/**
 	 * Resets the sensor position.
@@ -329,6 +315,14 @@ public class Drivetrain extends Subsystem {
 		leftMain.setSelectedSensorPosition(0);
 		rightMain.setSelectedSensorPosition(0);
 		gyro.setFusedHeading(0);
+	}
+
+	/**
+	 * Resets encoders.
+	 */
+	public void resetEncoders() {
+		leftMain.setSelectedSensorPosition(0);
+		rightMain.setSelectedSensorPosition(0);
 	}
 
 	/**
@@ -435,7 +429,7 @@ public class Drivetrain extends Subsystem {
 	@Override
 	public void periodic() {
 	  // Update the odometry in the periodic block
-	  odometry.update(getHeading(), getLeftDistance(), getRightDistance());
+	  odometry.update(getRotation2d(), getLeftDistance(), getRightDistance());
 	}
 
 	@Override
